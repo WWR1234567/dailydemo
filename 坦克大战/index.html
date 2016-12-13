@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<style type="text/css">
+		body,html{padding: 0;margin: 0;width: 100%;height: 100%;overflow: hidden;}
+		#box{width: 396px;height:452px;margin: 20px auto 0;background: #000;border: 2px solid #0d0;position:relative;}
+		#ControlBox{width: 100%;height: 100%;background: #7f7f7f;position: absolute;z-index: 100;opacity: 0.8;}
+		#startBtn{position: absolute;top:100px;left:150px;}
+		#goOn{position: absolute;top:130px;left:150px;}
+		#againBtn{position: absolute;top:160px;left:150px;width: 69px;padding: 0;}
+		.brick{width: 30px;height: 30px;background: url(img/brick0.png);}	
+		img{width: 30px;height: 25px;}	
+	</style>
+	<body>
+		<div id="box">
+			<div id="ControlBox">
+				<button id='startBtn'>开始游戏</button>
+				<button id='goOn'>继续游戏</button>
+				<button id='againBtn'>重新开始</button>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.0.js" ></script>
+	<script type="text/javascript" src="js/Tank.js" ></script>
+	<script type="text/javascript">
+		/*
+  		 *测试
+  		 * 
+  		 */
+  		var oSystem;
+		System.prototype={
+			AdditionalRun:function(){ 	//AdditionalRun
+				//console.log('系统在运行！！！')
+			}
+		}
+  		var Brick=new CreateBrick();//生成砖块对象
+  			Brick.distribution();//用规则一创建的砖块
+  			
+  		var Tank=new CreateTank();//生成坦克对象
+  			//我方坦克
+  			Tank.init({src:'img/MyTankT.png',id:'MyTank',style:'position:absolute;'});
+  			//敌方坦克例
+  			Tank.init({src:'img/EnemyTank.png',style:'position:absolute;top:0;right:0'});
+  	
+  		/*
+  		 * 开始、结束、暂停设置
+  		 */
+		$("#startBtn,#goOn,#againBtn").each(function(){
+			$(this).click(function(event){
+				if(!oSystem){
+					oSystem=new System();//生成系统对象
+					oSystem.start();
+					event.stopPropagation();
+					$("#ControlBox").slideUp('slow');
+				}				
+			});
+		});
+		$(window).keydown(function(event){
+			if(event.keyCode>=37  && event.keyCode<=40){			
+				Tank.move(event.keyCode,Tank.eleArr[0])
+			}else if(event.keyCode==32){
+				Tank.attack()
+			}else{
+				if(event.keyCode===27){
+					if(oSystem){
+						oSystem.pause();
+						$('#ControlBox').slideDown('slow');
+					}				
+				}else if(event.keyCode===71){
+					if(!oSystem){
+						oSystem=new System();//生成系统对象
+						oSystem.start();
+						$("#ControlBox").slideUp('slow');
+					}				
+				}else{
+					if(oSystem){
+						oSystem.goOn();
+						$("#ControlBox").slideUp('slow');
+					}			
+				}
+			}
+  		});  		
+	</script>
+</html>
