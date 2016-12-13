@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>贪吃蛇</title>
+	</head>
+	<style type="text/css">
+		body,html{height: 100%;width:100%;margin: 0;padding: 0;}
+		#box{width: 80%;margin-left: 10%;background: url(img/bg.jpg);border: 4px solid #ededed;height: 80%;position:relative;}
+		#startGame{position: absolute;left:45%;top:45%;}
+		#control{margin: 0 auto;width: 300px;text-align: center;}
+		#scoreDiv{position: absolute;top:0;left:14%;height: 19px;border: 1px solid #fff;font:16px "微软雅黑";}
+		#scoreDiv strong{text-decoration: none;font-weight: normal;}
+	</style>
+	<body>
+		<div id="control">
+			<input type="button" id="startGameBtn" value="开始游戏" />
+		
+			<input type='button' value='暂停' id='pauseBtn'/>
+			
+			<input type='button' value="继续" id='goOnBtn'/>
+			
+			<input type='button' value="重新开始" id='endBtn'>
+		</div>
+		<div id='box'>
+		</div>
+		<div id="scoreDiv">
+			<strong>分数:</strong><span id='score'>000</span>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/snake.js" ></script>
+	<script type="text/javascript">
+		/*
+		 * 测试
+		 */
+		var oBox=document.getElementById("box");//游戏盒子
+		var oStartBtn=document.getElementById("startGameBtn");//开始按钮
+		var oPauseBtn=document.getElementById("pauseBtn");//暂停按钮
+		var oEndBtn=document.getElementById("endBtn");//重新开始
+		var oGoOnBtn=document.getElementById("goOnBtn");//继续游戏
+		var nScore=document.getElementById("score");//得分
+		var oSnake; //
+		var oFood;//
+		var oSystem;//存储对象的变量
+		
+		
+		//定义系统执行的函数
+		System.prototype={
+			AdditionalRun:function(){
+				this.argument.first.boundaryDetection(this.pause,this);
+				this.argument.first.bite(this.pause,this);
+				this.argument.first.eat(this.argument.second.arrFood,this.argument.second);//吃食物的宝	
+				this.argument.first.showScore();//计分函数		
+				if(this.flag%30==0){
+					this.argument.second.init();//生成食物
+					this.argument.second.minus();//食物消失
+				}		
+				if(this.flag%this.argument.first.velocity===0){
+					this.argument.first.move();					//蛇的移动，以及检测
+					
+				}
+			}	
+		}
+		
+		//开始
+		oStartBtn.onclick=function(){
+			if(!oSystem){
+				//蛇对象
+				oSnake=new CreateSnake({number:10,parent:oBox,score:nScore});
+				//食物对象
+				oFood=new CreateFood({parent:oBox,probability:50});
+				//系统对象
+				oSystem=new System({first:oSnake,second:oFood});
+				//游戏开始
+				oSystem.start();
+			}
+		
+		}
+		//暂停
+		oPauseBtn.onclick=function(){
+			if(oSystem){			
+				oSystem.pause();
+			}
+		}
+		//继续
+		oGoOnBtn.onclick=function(){
+			if(oSystem){
+				oSystem.goOn();
+			}
+		}
+		//重新开始
+		oEndBtn.onclick=function(){
+			oBox.innerHTML='';
+			oSnake=null;
+			if(oSystem===undefined)return;
+			clearInterval(oSystem.timer);
+			oFood=null;
+			oSystem=null;
+				//蛇对象
+			oSnake=new CreateSnake({number:10,parent:oBox,score:nScore});
+				//食物对象
+			oFood=new CreateFood({parent:oBox,width:10,probability:50});
+				//系统对象
+			oSystem=new System({first:oSnake,second:oFood,score:nScore});
+			oSystem.start();
+		}
+	</script>
+</html>
