@@ -14,6 +14,7 @@ let serverConfig = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     hot: true,
+    noInfo: true,
     watchOptions: {
         ignored: /node_modules/,
     },
@@ -28,6 +29,9 @@ function createCompiler() {
         console.log(err.message || err);
         process.exit(1);
     }
+    compiler.plugin('done',function(status){
+        console.log( chalk.green('Compiled successfully!') )
+    })
     return compiler
 }
 
