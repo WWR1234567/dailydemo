@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const appDirectory = fs.realpathSync(process.cwd());
@@ -10,7 +11,7 @@ let paths = {
 }
 var config = {
     devtool: 'cheap-module-source-map',
-    entry:  './src/index.js',
+    entry:  [require.resolve('react-dev-utils/webpackHotDevClient'),'./src/index.js'],
     output: {
         filename: 'bundle.js',
         path: __dirname + '/public'
@@ -52,7 +53,10 @@ var config = {
                 loader: require.resolve('babel-loader'),
                 options: {
                   cacheDirectory: true,
-                  presets: [ 'es2015', 'react' ]
+                  // "presets": [
+                  //   "es2015",
+                  //   "react"
+                  // ],
                 },
               },
               {
@@ -90,9 +94,9 @@ var config = {
               {
                 test: /\.less$/,
                 use: [
-                  'style-loader',
+                  { loader: 'style-loader' },
                   { loader: 'css-loader', options: { importLoaders: 1 } },
-                  'less-loader'
+                  { loader: 'less-loader' }
                 ]
               },
               {
@@ -113,7 +117,8 @@ var config = {
       new HtmlWebpackPlugin({
         inject: true,
         template: paths.appHtml,
-      })
+      }),
+      new webpack.HotModuleReplacementPlugin()
     ],
 }
 

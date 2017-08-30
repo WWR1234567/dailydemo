@@ -1,23 +1,41 @@
 const chalk = require('chalk');
 const opn = require('opn');
+const fs = require('fs')
+const address = require('address');
 const path = require('path')
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.config.js');
 
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+let pathPublic = resolveApp('public');
 //标识为开发环境
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
+const host = process.env.HOST || '0.0.0.0';
 
 let serverConfig = {
+    disableHostCheck: true,
     watchContentBase: true,
-    contentBase: path.join(__dirname, "dist"),
     compress: true,
     hot: true,
-    noInfo: true,
+    // noInfo: true,
     watchOptions: {
         ignored: /node_modules/,
     },
+    quiet: true,
+    overlay: false,
+    host: host,
+    public: address.ip(),
+    publicPath: '/',
+    contentBase: pathPublic,  
+    historyApiFallback: {
+        // Paths with dots should still use the history fallback.
+        // See https://github.com/facebookincubator/create-react-app/issues/387.
+        disableDotRule: true,
+    },
+    clientLogLevel: 'none',
     // port: 8000,
 }
 function createCompiler() {
