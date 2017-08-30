@@ -38,7 +38,5 @@
       "react-app"
     ]
   },
-  "devDependencies": {
-    "react-dev-utils": "^4.0.0"
-  }
+  "devDependencies": {}
 }

@@ -11,7 +11,8 @@ let paths = {
 }
 var config = {
     devtool: 'cheap-module-source-map',
-    entry:  [require.resolve('react-dev-utils/webpackHotDevClient'),'./src/index.js'],
+    //"webpack-dev-server/client?http://localhost:8080/", "webpack/hot/dev-server"
+    entry:  ['webpack-dev-server/client?http://localhost:9000/','webpack/hot/dev-server','./src/index.js'],
     output: {
         filename: 'bundle.js',
         path: __dirname + '/public'
