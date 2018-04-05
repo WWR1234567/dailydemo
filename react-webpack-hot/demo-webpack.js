@@ -79,4 +79,4 @@ devServer.listen(9000, '127.0.0.1', err => {
 //     console.log(`${index}: ${val}`);
 // });
 
-// opn('http://localhost:8000'); 使用默认浏览器打开指定的url
+// opn('http://localhost:9000'); 使用默认浏览器打开指定的url
