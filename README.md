@@ -1,7 +1,10 @@
-## 代码分享
+# 代码分享
 
-### 1.一个webpack+react hot的配置
-### 2.snake为js原生面向对象方式写的一个小游戏
-### 3.Tank为坦克大战游戏
+## 1.一个 webpack+react hot 的配置
 
-``<div>这是一个段代码</div>``
+### 2.snake 为 js 原生面向对象方式写的一个小游戏
+
+``` this
+  <div>哈哈</div>
+  <div>这是一个段代码</div>
+```
